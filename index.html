@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bài 6 - Giao tiếp và ứng xử trong không gian mạng</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #dff6ff, #fef6ff);
+      color: #1f2d3d;
+    }
+
+    header {
+      background: linear-gradient(90deg, #4facfe, #8e54e9);
+      color: white;
+      padding: 24px 16px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+
+    header p {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 24px auto;
+      padding: 16px;
+    }
+
+    .intro-box,
+    .section {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .section {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    h2 {
+      color: #6a1b9a;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #1976d2;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #e3f2fd;
+      color: #1565c0;
+      padding: 6px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin: 8px 0 12px;
+      font-size: 15px;
+    }
+
+    button {
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+      margin-top: 10px;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      opacity: 0.95;
+    }
+
+    button:disabled {
+      background: #bdbdbd;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .option {
+      background: #f7faff;
+      border: 2px solid #d7e8ff;
+      padding: 12px;
+      border-radius: 12px;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .option:hover {
+      background: #eef6ff;
+    }
+
+    .correct {
+      background: #e8f5e9 !important;
+      border-color: #4caf50 !important;
+    }
+
+    .wrong {
+      background: #ffebee !important;
+      border-color: #e53935 !important;
+    }
+
+    .feedback {
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    .task-box {
+      background: #fff8e1;
+      border-left: 6px solid #ffb300;
+      padding: 14px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    .knowledge-card {
+      background: #f3e5f5;
+      padding: 14px;
+      border-radius: 12px;
+      margin: 12px 0;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .mini-game {
+      background: #f1f8e9;
+      padding: 14px;
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .note {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .success-box {
+      background: #e8f5e9;
+      padding: 18px;
+      border-radius: 14px;
+      border: 2px dashed #43a047;
+      text-align: center;
+    }
+
+    .progress {
+      height: 14px;
+      background: #e0e0e0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #43cea2, #185a9d);
+      transition: width 0.4s ease;
+    }
+
+    .pill {
+      display: inline-block;
+      margin: 4px 6px 4px 0;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #ede7f6;
+      color: #5e35b1;
+      font-size: 14px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      header h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>🌐 Bài 6. Giao tiếp và ứng xử trong không gian mạng</h1>
+    <p>Thời lượng toàn bài: khoảng 30 phút</p>
+  </header>
+
+  <div class="container">
+    <div class="intro-box">
+      <h2>Thông tin học sinh</h2>
+      <label>Họ và tên:</label>
+      <input type="text" id="studentName" placeholder="Nhập họ và tên của em..." />
+      <p class="note">Hãy nhập họ tên trước khi bắt đầu bài học nhé!</p>
+
+      <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <!-- PHẦN 1 -->
+    <div class="section active" id="section1">
+      <div class="tag">Phần 1 - Khởi động (5 phút)</div>
+      <h2>🚀 Mở đầu bài học</h2>
+      <p>Em hãy trả lời 2 câu hỏi trắc nghiệm sau để khởi động nhé!</p>
+
+      <div class="task-box">
+        <p><strong>Câu 1:</strong> Không gian mạng là gì?</p>
+        <div class="option" onclick="checkOption(this, true, 'fb1')">A. Môi trường kết nối con người thông qua Internet
+          và công nghệ số</div>
+        <div class="option" onclick="checkOption(this, false, 'fb1')">B. Chỉ là nơi chơi game</div>
+        <div class="option" onclick="checkOption(this, false, 'fb1')">C. Chỉ là mạng xã hội</div>
+        <div id="fb1" class="feedback"></div>
+      </div>
+
+      <div class="task-box">
+        <p><strong>Câu 2:</strong> Cách ứng xử nào sau đây là phù hợp trên không gian mạng?</p>
+        <div class="option" onclick="checkOption(this, false, 'fb2')">A. Bình luận ác ý khi không đồng tình</div>
+        <div class="option" onclick="checkOption(this, true, 'fb2')">B. Tôn trọng người khác, kiểm chứng thông tin trước
+          khi chia sẻ</div>
+        <div class="option" onclick="checkOption(this, false, 'fb2')">C. Chia sẻ thông tin riêng tư của người khác để
+          gây chú ý</div>
+        <div id="fb2" class="feedback"></div>
+      </div>
+
+      <h3>📌 Một số kiến thức ngắn</h3>
+      <div class="knowledge-card">
+        <ul>
+          <li><strong>Không gian mạng</strong> là môi trường kết nối con người qua Internet, mạng xã hội, email, diễn
+            đàn, trò chuyện trực tuyến,...</li>
+          <li>Giao tiếp trên không gian mạng giúp con người liên lạc nhanh, học tập thuận tiện nhưng cũng có thể gây
+            hiểu lầm hoặc lan truyền thông tin xấu.</li>
+          <li>Ứng xử có <strong>tính nhân văn</strong> là biết tôn trọng, đồng cảm, lịch sự và có trách nhiệm với lời
+            nói, hành động của mình.</li>
+        </ul>
+      </div>
+
+      <button id="next1" disabled onclick="showSection(2)">Chuyển sang phần 2</button>
+    </div>
+
+    <!-- PHẦN 2 -->
+    <div class="section" id="section2">
+      <div class="tag">Phần 2 - Hình thành kiến thức (10 phút)</div>
+      <h2>🧠 Hình thành kiến thức mới</h2>
+      <p>Em hãy tham gia các nhiệm vụ nhỏ dưới đây để tự khám phá kiến thức nhé!</p>
+
+      <div class="mini-game">
+        <h3>Trò chơi 1: Chọn đúng - sai</h3>
+        <p><strong>Nhiệm vụ:</strong> Hãy bấm vào nhận định đúng.</p>
+        <div class="task-box">
+          <p><strong>Câu 1:</strong> Một ưu điểm của giao tiếp trong không gian mạng là:</p>
+          <div class="option" onclick="markTask('t21', true, this)">Kết nối nhanh, mọi lúc mọi nơi</div>
+          <div class="option" onclick="markTask('t21', false, this)">Không cần suy nghĩ trước khi đăng bài</div>
+          <div id="t21" class="feedback"></div>
+        </div>
+
+        <div class="task-box">
+          <p><strong>Câu 2:</strong> Một nhược điểm của giao tiếp trong không gian mạng là:</p>
+          <div class="option" onclick="markTask('t22', false, this)">Tiết kiệm thời gian liên lạc</div>
+          <div class="option" onclick="markTask('t22', true, this)">Dễ xảy ra hiểu lầm, bắt nạt hoặc lừa đảo trực tuyến
+          </div>
+          <div id="t22" class="feedback"></div>
+        </div>
+      </div>
+
+      <div class="mini-game">
+        <h3>Trò chơi 2: Kéo gần kiến thức hơn bằng suy luận</h3>
+        <p>Đọc ví dụ và chọn cách đánh giá phù hợp.</p>
+
+        <div class="task-box">
+          <p><strong>Tình huống 1:</strong> Lan dùng nhóm lớp để hỏi bài khi nghỉ học.</p>
+          <div class="option" onclick="markTask('t23', true, this)">Đây là ưu điểm của giao tiếp trong không gian mạng
+          </div>
+          <div class="option" onclick="markTask('t23', false, this)">Đây là nhược điểm của giao tiếp trong không gian
+            mạng</div>
+          <div id="t23" class="feedback"></div>
+        </div>
